@@ -1,4 +1,4 @@
-import { Currencys } from "./getCurency";
+import { Currencys } from "../utils/currencySymbol";
 
 export interface CurrencyParameter {
     selectedCurrency : string,
@@ -11,8 +11,6 @@ const CurrencySelect = (props:CurrencyParameter) => {
         const newCurrency = e.target.value
         props.handleCurrencyChange(newCurrency);
    
-    //    setData(prev => ({ ...prev, currency: newCurrency }));
-    //    calculateTotalCost();
     };
 
     return(

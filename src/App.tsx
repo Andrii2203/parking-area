@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { FormData } from './FormData';
-import { fields } from './fields';
-import { generateParkingCode } from './generateParkingCode';
-import { getCurrencySymbol } from './getCurrencySymbol';
-import { Currencys, getDefaultCurrency } from './getCurency';
-import { formatDateToString } from './utils';
-import CurrencySelect from './CurrencySelect';
-import './App.css';
-import './input-container.css';
-import './dateInput.css';
-import './dropdown.css';
-import './tooltip-container.css';
-import './button.css';
+import { FormData } from './utils/FormData';
+import { fields } from './utils/fields';
+import { generateParkingCode } from './utils/generateParkingCode';
+import { Currencys, getDefaultCurrency, getCurrencySymbol } from './utils/currencySymbol';
+import { formatDateToString } from './utils/utils';
+import CurrencySelect from './components/CurrencySelect';
+import './style/App.css';
+import './style/input-container.css';
+import './style/dateInput.css';
+import './style/dropdown.css';
+import './style/tooltip-container.css';
+import './style/button.css';
 
 
 const App: React.FC = () => {
