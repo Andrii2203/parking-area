@@ -3,6 +3,7 @@ import { FormData } from './FormData';
 import { fields } from './fields';
 import { generateParkingCode } from './generateParkingCode';
 import { getCurrencySymbol } from './getCurrencySymbol';
+import { Currencys, getDefaultCurrency } from './getCurency';
 import './App.css';
 import './input-container.css';
 import './dateInput.css';
@@ -21,13 +22,13 @@ const App: React.FC = () => {
     startDateTime: "",
     endDateTime: "",
     discountPercentage: "",
-    currency: "USD",
+    currency: getDefaultCurrency(),
   };
 
   const [data, setData] = useState<FormData>(initialFormData);
   const [allData, setAllData] = useState<FormData[]>([]);
   const [totalCost, setTotalCost] = useState<number>(0);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(getDefaultCurrency());
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

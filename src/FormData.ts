@@ -13,3 +13,6 @@ export interface FormData {
     currency?: string;
   }
   
+// export Currency {
+//   USD: "USD"
+// }
