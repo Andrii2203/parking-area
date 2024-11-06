@@ -4,6 +4,7 @@ import { fields } from './fields';
 import { generateParkingCode } from './generateParkingCode';
 import { getCurrencySymbol } from './getCurrencySymbol';
 import { Currencys, getDefaultCurrency } from './getCurency';
+import { formatDateToString } from './utils';
 import CurrencySelect from './CurrencySelect';
 import './App.css';
 import './input-container.css';
@@ -133,7 +134,7 @@ const App: React.FC = () => {
     const itemToEdit = allData[index];
     if (itemToEdit) {
       setData(itemToEdit);
-      setSelectedCurrency(getDefaultCurrency());
+      setSelectedCurrency(selectedCurrency);
       calculateTotalCost();
     }
   };
@@ -256,20 +257,6 @@ const App: React.FC = () => {
             handleCurrencyChange={setNewCurrency}
 
           />
-          {/* <label>Select Currency: </label>
-          <select 
-            value={selectedCurrency} 
-            onChange={handleCurrencyChange}
-            className="dropdown-list"
-          >
-            {Currencys.map((currency) => (
-              <option 
-                className="dropdown-list-item" 
-                value={currency}>
-                  {currency}
-              </option>
-            ))}
-          </select> */}
           <h2>Total Cost {getCurrencySymbol(selectedCurrency)}: {totalCost.toFixed(2)}</h2>
           <button type='submit'>
             <span className="box">Confirm</span>
@@ -293,9 +280,9 @@ const App: React.FC = () => {
               <strong>Car Model:</strong> <span>{item.carModel}</span><br />
               <strong>License Plate:</strong> <span>{item.licensePlate}</span><br />
               <strong>Parking Area:</strong> <span>{item.parkingArea}</span><br />
-              <strong>Total Cost</strong> <span>{getCurrencySymbol(item.currency || "")}: {item.totalCost?.toFixed(2)}</span><br />
-              <strong>Start Date and Time:</strong> <span>{item.startDateTime.replace("T", " from ")}</span><br />
-              <strong>End Date and Time:</strong> <span>{item.endDateTime.replace("T", " to ")}</span><br />
+              <strong>Total Cost</strong> <span>{getCurrencySymbol(item.currency)}: {item.totalCost?.toFixed(2)}</span><br />
+              <strong>Start Date and Time:</strong> <span>{formatDateToString(item.startDateTime, " from ")}</span><br />
+              <strong>End Date and Time:</strong> <span>{formatDateToString(item.endDateTime," to ")}</span><br />
               <button type='button' onClick={() => handleEdit(index)}>
                 <span className="box">Edit</span>
               </button>
