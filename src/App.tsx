@@ -131,7 +131,7 @@ const App: React.FC = () => {
     const itemToEdit = allData[index];
     if (itemToEdit) {
       setData(itemToEdit);
-      setSelectedCurrency(itemToEdit.currency || "USD");
+      setSelectedCurrency(getCurrencySymbol);
       calculateTotalCost();
     }
   };
@@ -255,9 +255,15 @@ const App: React.FC = () => {
             onChange={handleCurrencyChange}
             className="dropdown-list"
           >
-            <option className="dropdown-list-item" value="USD">USD</option>
-            <option className="dropdown-list-item" value="EUR">EUR</option>
-            <option className="dropdown-list-item" value="PLN">PLN</option>
+            {Currencys.map((currency) => (
+              <option 
+                className="dropdown-list-item" 
+                value={currency}>
+                  {currency}
+              </option>
+            ))}
+            {/* <option className="dropdown-list-item" value="EUR">EUR</option>
+            <option className="dropdown-list-item" value="PLN">PLN</option> */}
           </select>
           <h2>Total Cost {getCurrencySymbol(selectedCurrency)}: {totalCost.toFixed(2)}</h2>
           <button type='submit'>
