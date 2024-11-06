@@ -8,6 +8,8 @@ import './input-container.css';
 import './dateInput.css';
 import './dropdown.css';
 import './tooltip-container.css';
+import './button.css';
+
 
 const App: React.FC = () => {
   const initialFormData: FormData = {
@@ -258,35 +260,36 @@ const App: React.FC = () => {
           </select>
           <h2>Total Cost {getCurrencySymbol(selectedCurrency)}: {totalCost.toFixed(2)}</h2>
           <button type='submit'>
-            <span className="box">
-              Submit
-            </span>
+            <span className="box">Confirm</span>
           </button>
           <button type='button' onClick={handleGetData}>
-            <span className="box">
-              GET
-            </span>
+            <span className="box">Reservation</span>
           </button>
           {data.id && (
-            <button type='button' onClick={handleUpdate}>Update</button>
+            <button type='button' onClick={handleUpdate}>
+              <span className="box">Update</span>
+            </button>
           )}
         </form>
       </div>
       <div className='right-container'>
-        <h2>Received Data</h2>
-        <ul>
+        <ul className='list'>
           {allData.map((item, index) => (
             <li key={item.id}>
-              <strong>Name:</strong> {item.firstName} {item.lastName}<br />
-              <strong>Phone:</strong> {item.phone}<br />
-              <strong>Car Model:</strong> {item.carModel}<br />
-              <strong>License Plate:</strong> {item.licensePlate}<br />
-              <strong>Parking Area:</strong> {item.parkingArea}<br />
-              <strong>Total Cost</strong> {getCurrencySymbol(item.currency || "")}: {item.totalCost?.toFixed(2)}<br />
-              <strong>Start Date and Time:</strong> {item.startDateTime.replace("T", " from ")}<br />
-              <strong>End Date and Time:</strong> {item.endDateTime.replace("T", " to ")}<br />
-              <button type='button' onClick={() => handleEdit(index)}>Edit</button>
-              <button type='button' onClick={() => handleDelete(index)}>Delete</button>
+              <strong>Name:</strong> <span>{item.firstName} {item.lastName}</span><br />
+              <strong>Phone:</strong> <span>{item.phone}</span><br />
+              <strong>Car Model:</strong> <span>{item.carModel}</span><br />
+              <strong>License Plate:</strong> <span>{item.licensePlate}</span><br />
+              <strong>Parking Area:</strong> <span>{item.parkingArea}</span><br />
+              <strong>Total Cost</strong> <span>{getCurrencySymbol(item.currency || "")}: {item.totalCost?.toFixed(2)}</span><br />
+              <strong>Start Date and Time:</strong> <span>{item.startDateTime.replace("T", " from ")}</span><br />
+              <strong>End Date and Time:</strong> <span>{item.endDateTime.replace("T", " to ")}</span><br />
+              <button type='button' onClick={() => handleEdit(index)}>
+                <span className="box">Edit</span>
+              </button>
+              <button type='button' onClick={() => handleDelete(index)}>
+                <span className="box">Delete</span>
+              </button>
             </li>
           ))}
         </ul>
