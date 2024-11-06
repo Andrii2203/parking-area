@@ -72,12 +72,9 @@ const App: React.FC = () => {
   };
 
   const setNewCurrency = ( newCurrency : string ) => {
-    console.log("newCurrency", newCurrency);
     setSelectedCurrency(newCurrency);
-
     setData(prev => ({ ...prev, currency: newCurrency }));
     calculateTotalCost();
-    
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -132,8 +129,8 @@ const App: React.FC = () => {
   const handleEdit = (index: number) => {
     const itemToEdit = allData[index];
     if (itemToEdit) {
+      setNewCurrency(itemToEdit.currency ?? "");
       setData(itemToEdit);
-      setSelectedCurrency(selectedCurrency);
       calculateTotalCost();
     }
   };
@@ -151,7 +148,7 @@ const App: React.FC = () => {
                 ...data,
                 parkingArea: data.parkingArea,
                 totalCost,
-                currency: selectedCurrency,
+                currency: setNewCurrency,
             }),
         });
 
@@ -279,7 +276,7 @@ const App: React.FC = () => {
               <strong>Car Model:</strong> <span>{item.carModel}</span><br />
               <strong>License Plate:</strong> <span>{item.licensePlate}</span><br />
               <strong>Parking Area:</strong> <span>{item.parkingArea}</span><br />
-              <strong>Total Cost</strong> <span>{getCurrencySymbol(item.currency)}: {item.totalCost?.toFixed(2)}</span><br />
+              <strong>Total Cost:</strong> <span>{getCurrencySymbol(item.currency)} {item.totalCost?.toFixed(2)}</span><br />
               <strong>Start Date and Time:</strong> <span>{formatDateToString(item.startDateTime, " from ")}</span><br />
               <strong>End Date and Time:</strong> <span>{formatDateToString(item.endDateTime," to ")}</span><br />
               <button type='button' onClick={() => handleEdit(index)}>
