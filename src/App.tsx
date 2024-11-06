@@ -4,6 +4,7 @@ import { fields } from './fields';
 import { generateParkingCode } from './generateParkingCode';
 import { getCurrencySymbol } from './getCurrencySymbol';
 import { Currencys, getDefaultCurrency } from './getCurency';
+import CurrencySelect from './CurrencySelect';
 import './App.css';
 import './input-container.css';
 import './dateInput.css';
@@ -70,12 +71,13 @@ const App: React.FC = () => {
     }
   };
 
-  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-     const newCurrency = e.target.value
+  const setNewCurrency = ( newCurrency : string ) => {
+    console.log("newCurrency", newCurrency);
     setSelectedCurrency(newCurrency);
 
     setData(prev => ({ ...prev, currency: newCurrency }));
     calculateTotalCost();
+    
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -131,7 +133,7 @@ const App: React.FC = () => {
     const itemToEdit = allData[index];
     if (itemToEdit) {
       setData(itemToEdit);
-      setSelectedCurrency(getCurrencySymbol);
+      setSelectedCurrency(getDefaultCurrency());
       calculateTotalCost();
     }
   };
@@ -249,7 +251,12 @@ const App: React.FC = () => {
               placeholder="Date:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MMYYYY"
             />
           </div>
-          <label>Select Currency: </label>
+          <CurrencySelect
+            selectedCurrency={selectedCurrency}
+            handleCurrencyChange={setNewCurrency}
+
+          />
+          {/* <label>Select Currency: </label>
           <select 
             value={selectedCurrency} 
             onChange={handleCurrencyChange}
@@ -262,9 +269,7 @@ const App: React.FC = () => {
                   {currency}
               </option>
             ))}
-            {/* <option className="dropdown-list-item" value="EUR">EUR</option>
-            <option className="dropdown-list-item" value="PLN">PLN</option> */}
-          </select>
+          </select> */}
           <h2>Total Cost {getCurrencySymbol(selectedCurrency)}: {totalCost.toFixed(2)}</h2>
           <button type='submit'>
             <span className="box">Confirm</span>
