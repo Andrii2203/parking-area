@@ -4,7 +4,7 @@ const cors = require("cors");
 const { DocumentStore } = require("ravendb");
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
-const config = require("./config");
+const config = require("./config/config");
 
 const app = express();
 const port = 3000;
@@ -22,6 +22,13 @@ store.initialize();
 const weekdayRate = 1.15;
 const weekendRate = weekdayRate * 1.3;
 let exchangeRates = {};
+
+app.get("/api/rates", (req, res) => {
+    res.json({
+        weekdayRate,
+        weekendRate
+    });
+});
 
 fetchExchangeRates();
 

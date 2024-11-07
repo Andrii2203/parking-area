@@ -1,4 +1,5 @@
 import { Currencys } from "../utils/currencySymbol";
+import "../style/currency-select.css"
 
 export interface CurrencyParameter {
     selectedCurrency : string,
@@ -14,8 +15,8 @@ const CurrencySelect = (props:CurrencyParameter) => {
     };
 
     return(
-        <div>
-            <label>Select Currency: </label>
+        <div className="container-select">
+            <label className="label-select">Select Currency: </label>
             <select 
             value={props.selectedCurrency}
             onChange={handleCurrencyChange}

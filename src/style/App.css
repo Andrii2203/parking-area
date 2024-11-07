@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: whitesmoke;
   background-color: #212121;
 }
 ::-webkit-scrollbar{
@@ -31,6 +30,9 @@ input {
   margin-left: 10vw;
 
 }
+.total-cost-h2 {
+  color: bisque;
+}
 
 .right-container {
   width: 50vw;
@@ -50,6 +52,7 @@ input {
 .list {
   display: flex;
   flex-direction: column;
+  color: bisque;
 }
 
 li {
@@ -66,7 +69,7 @@ li {
 
 li strong{
   font-weight: bold;
-  color: antiquewhite;
+  color: bisque;
 }
 
 li span {

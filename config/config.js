@@ -1,5 +1,3 @@
-const { Certificate } = require("crypto");
-
 const config = {
     ravenDB: {
         url: "https://a.free.pay-calculat.ravendb.cloud",
@@ -8,7 +6,7 @@ const config = {
     },
     exchangeRatesAPI: {
         url: "https://api.exchangeratesapi.io/latest",
-        accessKey: "927f45a497ac85d5cda8d9eaff8e9c4e"
+        access_key: "927f45a497ac85d5cda8d9eaff8e9c4e"
     }
 };
 

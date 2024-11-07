@@ -3,8 +3,9 @@ import { FormData } from './utils/formData';
 import { fields } from './utils/fields';
 import { generateParkingCode } from './utils/generateParkingCode';
 import { Currencys, getDefaultCurrency, getCurrencySymbol } from './utils/currencySymbol';
-import { formatDateToString } from './utils/utils';
+import { formatDateToString, returnNumberAfterComa } from './utils/utils';
 import CurrencySelect from './components/CurrencySelect';
+import ParkingRatesModal from './components/ParkingRatesModal';
 import './style/App.css';
 import './style/input-container.css';
 import './style/dateInput.css';
@@ -186,6 +187,7 @@ const App: React.FC = () => {
 
   return (
     <div className='main-container'>
+      <ParkingRatesModal />
       <div className='left-container'>
           {fields.map((field) => (
             <div 
@@ -253,7 +255,7 @@ const App: React.FC = () => {
             handleCurrencyChange={setNewCurrency}
 
           />
-          <h2>Total Cost {getCurrencySymbol(selectedCurrency)}: {totalCost.toFixed(2)}</h2>
+          <h2 className='total-cost-h2'>Total Cost {getCurrencySymbol(selectedCurrency)}: {returnNumberAfterComa(totalCost, 2)}</h2>
           <button type='submit'>
             <span className="box">Confirm</span>
           </button>
@@ -276,7 +278,7 @@ const App: React.FC = () => {
               <strong>Car Model:</strong> <span>{item.carModel}</span><br />
               <strong>License Plate:</strong> <span>{item.licensePlate}</span><br />
               <strong>Parking Area:</strong> <span>{item.parkingArea}</span><br />
-              <strong>Total Cost:</strong> <span>{getCurrencySymbol(item.currency)} {item.totalCost?.toFixed(2)}</span><br />
+              <strong>Total Cost:</strong> <span>{getCurrencySymbol(item.currency)} {item.totalCost !== undefined ? returnNumberAfterComa(item.totalCost, 2) : "N/A"}</span><br />
               <strong>Start Date and Time:</strong> <span>{formatDateToString(item.startDateTime, " from ")}</span><br />
               <strong>End Date and Time:</strong> <span>{formatDateToString(item.endDateTime," to ")}</span><br />
               <button type='button' onClick={() => handleEdit(index)}>

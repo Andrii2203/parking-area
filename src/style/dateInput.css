@@ -1,5 +1,5 @@
 #dateDiv{
-    color: white;
+    color: bisque;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,7 @@
     -webkit-filter: drop-shadow(1px 1px 10px #000);
     filter: drop-shadow(7px 7px 10px #00000059);
     font-family: Arial, Helvetica, sans-serif;
-    color: whitesmoke;
+    color: bisque;
     text-align: center;
     font-size: 14px;
     outline: 2px solid rgba(0, 0, 0, 0);
