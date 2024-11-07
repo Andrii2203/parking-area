@@ -8,3 +8,5 @@ All calculations are done on the server side using the RavenDB database, for the
 The application does not have the ability to select a parking space, this space is created for you, and you do not need to select it.
 
 The application has the ability to edit data in case you entered something wrong except for the parking space.
+
+Importantn - **The site will be fully functional when the server is started**
