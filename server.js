@@ -4,6 +4,7 @@ const cors = require("cors");
 const { DocumentStore } = require("ravendb");
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+const config = require("./config");
 
 const app = express();
 const port = 3000;
@@ -11,9 +12,9 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const store = new DocumentStore("https://a.free.pay-calculat.ravendb.cloud", "payment-calculations");
+const store = new DocumentStore(config.ravenDB.url, config.ravenDB.database);
 store.authOptions = {
-    certificate: fs.readFileSync("C:/Users/Andrii/Desktop/payment-calculations/free-pay-calculat-client-certificate.pem"),
+    certificate: fs.readFileSync(config.ravenDB.certificatePath),
     type: "pem"
 };
 store.initialize();
@@ -47,7 +48,7 @@ function calculateTotalCost(startDateTime, endDateTime, discountPercentage) {
 
 async function fetchExchangeRates() {
     try {
-        const response = await fetch(`https://api.exchangeratesapi.io/latest?access_key=927f45a497ac85d5cda8d9eaff8e9c4e`);
+        const response = await fetch(`${config.exchangeRatesAPI.url}?access_key=${config.exchangeRatesAPI.accessKey}`);
         const data = await response.json();
         
         if(data.rates) {

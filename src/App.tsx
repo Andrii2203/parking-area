@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FormData } from './utils/FormData';
+import { FormData } from './utils/formData';
 import { fields } from './utils/fields';
 import { generateParkingCode } from './utils/generateParkingCode';
 import { Currencys, getDefaultCurrency, getCurrencySymbol } from './utils/currencySymbol';
