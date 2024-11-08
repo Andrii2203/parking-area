@@ -6,7 +6,7 @@ const config = {
     },
     exchangeRatesAPI: {
         url: "https://api.exchangeratesapi.io/latest",
-        access_key: "927f45a497ac85d5cda8d9eaff8e9c4e"
+        access_key: "c4a1087b97c7f28952c6be8d3bdbb839"
     }
 };
 

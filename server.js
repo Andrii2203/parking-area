@@ -55,7 +55,7 @@ function calculateTotalCost(startDateTime, endDateTime, discountPercentage) {
 
 async function fetchExchangeRates() {
     try {
-        const response = await fetch(`${config.exchangeRatesAPI.url}?access_key=${config.exchangeRatesAPI.accessKey}`);
+        const response = await fetch(`${config.exchangeRatesAPI.url}?access_key=${config.exchangeRatesAPI.access_key}`);
         const data = await response.json();
         
         if(data.rates) {
