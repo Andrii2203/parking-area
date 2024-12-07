@@ -4,4 +4,4 @@ export const fields = [
     { name: "phone", label: "Phone" },
     { name: "carModel", label: "Car Model" },
     { name: "licensePlate", label: "License Plate" },
-  ] as const;
+] as const;

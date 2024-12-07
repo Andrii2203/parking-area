@@ -18,14 +18,16 @@ const CurrencySelect = (props:CurrencyParameter) => {
         <div className="container-select">
             <label className="label-select">Select Currency: </label>
             <select 
-            value={props.selectedCurrency}
-            onChange={handleCurrencyChange}
-            className="dropdown-list"
-        >
+                value={props.selectedCurrency}
+                onChange={handleCurrencyChange}
+                className="dropdown-list"
+            >
             {Currencys.map((currency) => (
             <option 
+                key={currency}
                 className="dropdown-list-item" 
-                value={currency}>
+                value={currency}
+            >
                 {currency}
             </option>
             ))}

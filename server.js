@@ -5,6 +5,7 @@ const { DocumentStore } = require("ravendb");
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const config = require("./config/config");
+const { error } = require("console");
 
 const app = express();
 const port = 3000;
@@ -31,10 +32,17 @@ app.get("/api/rates", (req, res) => {
 });
 
 fetchExchangeRates();
+initializeExchageRates();
+
 
 function calculateTotalCost(startDateTime, endDateTime, discountPercentage) {
     const start = new Date(startDateTime);
     const end = new Date(endDateTime);
+
+    if(isNaN(start) || isNaN(end)) {
+        return { error: "Invalid start or end date-time dormat."};
+    }
+
     const diffInMs = end.getTime() - start.getTime();
     const diffInHours = diffInMs / (1000 * 60 * 60);
 
@@ -56,43 +64,63 @@ function calculateTotalCost(startDateTime, endDateTime, discountPercentage) {
 async function fetchExchangeRates() {
     try {
         const response = await fetch(`${config.exchangeRatesAPI.url}?access_key=${config.exchangeRatesAPI.access_key}`);
+        if(!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
-        
         if(data.rates) {
             exchangeRates = data.rates;
         } else {
-            console.error("Error can find currencies");
+            throw new Error("Error can find currencies");
         }
     } catch(error) {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
     }
 }
 
-function convertCurrency(amount, currency) {
-    if(!exchangeRates[currency]) {
-        throw new Error(`Rates for ${currency} cannot be found in exchangeRates`);
+async function initializeExchageRates() {
+    await fetchExchangeRates();
+    setInterval(fetchExchangeRates, 60 * 60 * 1000);
+}
+
+
+async function convertCurrency(amount, currency) {
+    try{
+        if(!exchangeRates[currency]) {
+            throw new Error(`Rates for ${currency} cannot be found in exchangeRates`);
+        }
+        return amount * exchangeRates[currency];
+    } catch(error) {
+        console.error("Error converting currency:", error.message);
+        throw error;
     }
-    return amount * exchangeRates[currency];
 }
 
 app.post("/api/calculate", async (req, res) => {
     const { startDateTime, endDateTime, discountPercentage, currency, paymentDate } = req.body;
-    const totalCost = calculateTotalCost(startDateTime, endDateTime, discountPercentage);
+    
+    if(!startDateTime || !endDateTime) {
+        return res.status(400).json({ error: "Start and end date-time are required." });
+    }
 
+    const totalCost = calculateTotalCost(startDateTime, endDateTime, discountPercentage);
     if(totalCost.error) {
         return res.status(400).json({ error: totalCost.error });
     }
 
+    if(!Object.keys(exchangeRates).length && currency !== "USD") {
+        return res.status(500).json({ error: "Exchange rates are unvailable. Please try again later." });
+    }
+
     try {
         let convertedCost = totalCost;
-
         if(currency && currency !== "USD") {
             convertedCost = convertCurrency(totalCost, currency);
         }
         
         res.json({ totalCost: convertedCost, currency: currency || "USD" });
     } catch (error) {
-        console.error("Error fetching exchange rates:", error);
+        console.error("Error fetching exchange rates:", error.message);
         res.status(500).json({ error: "Error fetching exchange rates" });
     }
 });
@@ -101,12 +129,11 @@ app.post("/api/data", async (req, res) => {
     const session = store.openSession();
     try {
         const data = req.body;
-        console.log("Data being saved:", data);
         await session.store(data);
         await session.saveChanges();
         res.status(201).send({ message: "Data saved successfully!" });
     } catch (error) {
-        console.error("Error saving data:", error);
+        console.error("Error saving data:", error.message);
         res.status(500).send({ message: "Error saving data", error: error.message });
     }
 });
@@ -131,7 +158,7 @@ app.get("/api/data", async (req, res) => {
         }));
         res.status(200).send(formattedData);
     } catch (error) {
-        console.error("Error retrieving data:", error);
+        console.error("Error retrieving data:", error.message);
         res.status(500).send({ message: "Error retrieving data", error: error.message });
     }
 });
@@ -159,7 +186,7 @@ app.put("/api/data/:id", async (req, res) => {
         await session.saveChanges()
         res.status(204).send();
     } catch (error) {
-        console.error("Error updating data:", error);
+        console.error("Error updating data:", error.message);
         res.status(500).send({ message: "Error updating data", error: error.message });
     }
 
@@ -178,9 +205,13 @@ app.delete("/api/data/:id", async (req, res) => {
         await session.saveChanges();
         res.status(204).send();
     } catch (error) {
-        console.error("Error deleting data:", error);
+        console.error("Error deleting data:", error.message);
         res.status(500).send({ message: "Error deleting data", error: error.message });
     }
+});
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
 });
 
 app.listen(port, () => {
